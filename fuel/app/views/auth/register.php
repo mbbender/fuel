@@ -5,50 +5,46 @@
 	<?php endif; ?>
 
 	<?php if (isset($login_error)): ?>
-		<div class="error"><?php echo $login_error; ?></div>
+<div class="error" xmlns="http://www.w3.org/1999/html"><?php echo $login_error; ?></div>
 	<?php endif; ?>
 
     <div class="row">
-        <div class="span12">
+        <div class="span3 <?php if (isset($val) and method_exists($val, 'error') and $val->error('username')) echo ' control-group error'; ?>">
             <label for="username">Username:</label>
-            <div class="input"><?php echo Form::input('username', $user->username); ?></div>
-
-            <?php if ($val->error('username')): ?>
-            <div class="error"><?php echo $val->error('username')->get_message('You must provide a username'); ?></div>
+            <?php if (isset($val) and method_exists($val, 'error') and $val->error('username')): ?>
+                <p><div class="label label-important"><?php echo $val->error('username')->get_message(':label is required'); ?></div></p>
             <?php endif; ?>
+            <div class="input"><?php echo Form::input('username', isset($user->username) ? $user->username : ''); ?></div>
         </div>
     </div>
 
     <div class="row">
-		<div class="span12">
+		<div class="span3 <?php if (isset($val) and method_exists($val, 'error') and $val->error('email')) echo ' control-group error'; ?>">
             <label for="email">Email:</label>
-            <div class="input"><?php echo Form::input('email', $user->email); ?></div>
-
-            <?php if ($val->error('email')): ?>
-                <div class="error"><?php echo $val->error('email')->get_message('You must provide an email'); ?></div>
+            <?php if (isset($val) and method_exists($val, 'error') and $val->error('email')): ?>
+                <p><div class="label label-important"><?php echo $val->error('email')->get_message(':label is required'); ?></div></p>
             <?php endif; ?>
+            <div class="input"><?php echo Form::input('email', isset($user->email) ? $user->email : ''); ?></div>
         </div>
 	</div>
 
 	<div class="row">
-        <div class="span12">
+        <div class="span3 <?php if (isset($val) and method_exists($val, 'error') and $val->error('password')) echo ' control-group error'; ?>">
             <label for="password">Password:</label>
-            <div class="input"><?php echo Form::password('password'); ?></div>
-
-            <?php if ($val->error('password')): ?>
-                <div class="error"><?php echo $val->error('password')->get_message(':label cannot be blank'); ?></div>
+            <?php if (isset($val) and method_exists($val, 'error') and $val->error('password')): ?>
+                <p><div class="label label-important"><?php echo $val->error('password')->get_message(':label is required'); ?></div></p>
             <?php endif; ?>
+            <div class="input"><?php echo Form::password('password'); ?></div>
         </div>
 	</div>
 
     <div class="row">
-        <div class="span12">
+        <div class="span3 <?php if (isset($val) and method_exists($val, 'error') and $val->error('password2')) echo ' control-group error'; ?>">
             <label for="password2">Password Verification:</label>
-            <div class="input"><?php echo Form::password('password2'); ?></div>
-
-            <?php if ($val->error('password2')): ?>
-            <div class="error"><?php echo $val->error('password2')->get_message(':label cannot be blank'); ?></div>
+            <?php if (isset($val) and method_exists($val, 'error') and $val->error('password2')): ?>
+                <p><div class="label label-important"><?php echo $val->error('password2')->get_message(':label did not match'); ?></div></p>
             <?php endif; ?>
+            <div class="input"><?php echo Form::password('password2'); ?></div>
         </div>
     </div>
 

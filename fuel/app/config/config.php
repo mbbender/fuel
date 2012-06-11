@@ -141,6 +141,7 @@ return array(
 			'Fuel\\Core\\View',
 			'Fuel\\Core\\ViewModel',
             'Fuel\\Core\\Validation',
+            'Fuel\\Core\\Fieldset',
 			'Closure',
 		)
 	),
@@ -190,7 +191,7 @@ return array(
 	 *      array(APPPATH.'modules'.DS)
 	 */
 	'module_paths' => array(
-		//APPPATH.'modules'.DS
+		APPPATH.'modules'.DS
 	),
 
 
@@ -214,6 +215,7 @@ return array(
 			'orm',
             'auth',
             'ninjauth',
+            'infusedauth',
             'oauth',
             'oauth2'
 		),
@@ -241,7 +243,7 @@ return array(
 		 * add it like 'session' => 'auth'.
 		 * If you don't want the config in a group use null as groupname.
 		 */
-		'config'  => array(),
+		'config'  => array('app'),
 
 		/**
 		 * Language files to autoload

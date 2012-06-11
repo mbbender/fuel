@@ -20,7 +20,8 @@
  */
 
 return array(
-	'driver' => 'SimpleAuth',
+	//'driver' => 'SimpleAuth',
+    'driver' => 'InfusedAuth',
 	'verify_multiple_logins' => false,
 	'salt' => 'asdfa87fsha8f74h4afasdgwa43g',
 );

@@ -153,7 +153,7 @@ class Auth_Login_InfusedAuth extends \Auth\Auth_Login_SimpleAuth
         {
             case 'email':
 
-                $validation_link = \Uri::create(\Config::get('account_validation_route','auth/validate').'/'.$user_temp['validation_code1'].'/'.$user_temp['validation_code2']);
+                $validation_link = \Uri::create(\Config::get('verify_action','auth/verify').'/'.$user_temp['validation_code1'].'/'.$user_temp['validation_code2']);
 
                 \Package::load('email');
                 $email = \Email::forge();
@@ -180,18 +180,19 @@ class Auth_Login_InfusedAuth extends \Auth\Auth_Login_SimpleAuth
         return TRUE;
     }
 
-    public function validate($code1,$code2)
+    public function verify($code1,$code2)
     {
-        //todo: Add a user check to make sure user doesn't already exists
-        //todo: A new user ID is created when we validate the user. This means that we need to migrate any added authentications as well
-
-        //$temp_user = self::find('first',array('where'=>array(array('validation_code1'=>$code1),array('validation_code2'=>$code2))));
         $temp_user = \DB::select()->from('users_temp')->where_open()
             ->where('validation_code1',$code1)
             ->and_where('validation_code2',$code2)->where_close()
             ->as_assoc()->execute()->as_array();
         if(!empty($temp_user[0]))
         {
+            //Lets see if this user has already logged in some other way before verifying thier account
+            $valid_user = \DB::select()->from(\Config::get('simpleauth.table_name'))
+                ->where('email',$temp_user[0]['email'])
+                ->as_assoc()->execute()->as_array();
+
             $temp_user_id = $temp_user[0]['id'];
             unset($temp_user[0]['id']);
             unset($temp_user[0]['validation_code1']);
@@ -201,15 +202,53 @@ class Auth_Login_InfusedAuth extends \Auth\Auth_Login_SimpleAuth
             $temp_user[0]['login_hash'] = '';
 
 
-            $user = new \Model_User($temp_user[0]);
-            if($user->save())
+            if(!empty($valid_user))
             {
+                $user = \Model_User::find($valid_user[0]['id']);
                 \Model_Temp_User::find($temp_user_id)->delete();
                 return $user;
+            }
+
+            else{
+                $user = new \Model_User($temp_user[0]);
+                if($user->save())
+                {
+                    \Model_Temp_User::find($temp_user_id)->delete();
+                    return $user;
+                }
             }
         }
 
         return false;
+    }
+
+    public function add_authentication($user_id,$user_hash,$authentication)
+    {
+        $existing_auth = \DB::select_array(array('*'))
+            ->where('user_id', '=', $user_id)
+            ->and_where('provider', '=', $authentication['provider'])
+            ->and_where('uid', '=', $authentication['uid'])
+            ->from('authentications')
+            ->execute(\Config::get('infusedauth.db_connection'))->current();
+
+        if($existing_auth > 0)
+        {
+            throw new \InfusedAuthException('Your already linked to '.$authentication['provider'],0,$user_id);
+        }
+
+        else{
+            \NinjAuth\Model_Authentication::forge(array(
+                'user_id' => $user_id,
+                'provider' => $authentication['provider'],
+                'uid' => $authentication['uid'],
+                'access_token' => $authentication['access_token'],
+                'secret' => $authentication['secret'],
+                'refresh_token' => $authentication['refresh_token'],
+                'expires' => $authentication['expires'],
+                'created_at' => time(),
+            ))->save();
+        }
+        return true;
     }
 
     /**
@@ -228,7 +267,7 @@ class Auth_Login_InfusedAuth extends \Auth\Auth_Login_SimpleAuth
         }
 
         $password = $this->hash_password($password);
-        $this->user = \DB::select_array(\Config::get('infusedauth.table_columns', array('*')))
+        $this->user = \DB::select_array(\Config::get('infusedauth.temp_table_columns', array('*')))
             ->where_open()
             ->where('username', '=', $username_or_email)
             ->or_where('email', '=', $username_or_email)

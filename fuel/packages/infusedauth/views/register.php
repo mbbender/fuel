@@ -1,13 +1,14 @@
 <?php echo $fieldset; ?>
 
-<h2>Or login with</h2>
-<button type="submit" formnovalidate="formnovalidate" value="Github" name="btnSubmit" title="Login using your Github account" class="btn btn-large">Github</button>
-<button type="submit" formnovalidate="formnovalidate" value="Facebook" name="btnSubmit" title="Login using your Facebook account"  class="btn btn-large">Facebook</button>
-<button type="submit" formnovalidate="formnovalidate" value="Twitter" name="btnSubmit" title="Login using your Twitter account"  class="btn btn-large">Twitter</button>
-<button type="submit" formnovalidate="formnovalidate" value="Google" name="btnSubmit" title="Login using your Google account"  class="btn btn-large">Google</button>
+<button type="submit" value="Register" name="btnSubmit" title="Login using email address and password" class="btn btn-primary">Register</button>
+| <a href="/auth/login">Login</a>
+| <a href="/auth/reset">Forgot your password?</a>
 
-<div class="row">
-    <div class="span12">
-        <?php echo Html::anchor('admin/login','Already a member?'); ?>
-    </div>
-</div>
+
+</form>
+
+<h2>Or login with</h2>
+<?php echo Html::anchor('auth/session/github','Github',array('class'=>'btn btn-large')) ?>&nbsp;
+<?php echo Html::anchor('auth/session/facebook','Facebook',array('class'=>'btn btn-large')) ?>&nbsp;
+<?php echo Html::anchor('auth/session/twitter','Twitter',array('class'=>'btn btn-large')) ?>&nbsp;
+<?php echo Html::anchor('auth/session/google','Google+',array('class'=>'btn btn-large')) ?>

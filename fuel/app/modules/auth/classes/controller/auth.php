@@ -11,7 +11,7 @@
 
 namespace auth;
 
-class Controller_Register extends \Controller_Register
+class Controller_Auth extends \Controller_Infusedauth
 {
 
 }

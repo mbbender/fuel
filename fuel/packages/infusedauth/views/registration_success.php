@@ -5,7 +5,7 @@
         $('#message').fadeOut(function(){
             $('#message').text("Sending verification email")
         }).fadeIn();
-        $.post('send_validation','user_id=<?php echo $user_id?>', function(data){
+        $.post('<?php echo isset($resend_action) ? $resend_action : 'resend_verification_request' ?>','user_id=<?php echo $user_id?>', function(data){
             if(data.success)
             {
                 $('#heading').text('Resend completed successfully.');
@@ -24,6 +24,14 @@
             }
             $('#resend_button').removeAttr('disabled');
         }, 'json')
+        .error(function(xhr){
+                $('#heading').text('Resend failed.');
+
+                $('#message').fadeOut(function(){
+                    $('#message').text('A problem occurred sending your email. Please try again or contact support.')
+                }).fadeIn();
+                $('#resend_button').removeAttr('disabled');
+            })
 
     }
 </script>

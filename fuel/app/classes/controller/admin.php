@@ -10,57 +10,8 @@ class Controller_Admin extends Controller_Base {
 
 		if ( ! Auth::check() and Request::active()->action != 'login')
 		{
-			Response::redirect('admin/login');
+			Response::redirect('auth/login');
 		}
-	}
-
-	public function action_login()
-	{
-		// Already logged in
-		Auth::check() and Response::redirect('admin');
-
-		$val = Validation::forge();
-
-		if (Input::method() == 'POST')
-		{
-			$val->add('email', 'Email or Username')
-			    ->add_rule('required');
-			$val->add('password', 'Password')
-			    ->add_rule('required');
-
-			if ($val->run())
-			{
-				$auth = Auth::instance();
-
-				// check the credentials. This assumes that you have the previous table created
-				if (Auth::check() or $auth->login(Input::post('email'), Input::post('password')))
-				{
-					// credentials ok, go right in
-					$current_user = Model_User::find_by_username(Auth::get_screen_name());
-					Session::set_flash('success', 'Welcome, '.$current_user->username);
-					Response::redirect('admin');
-				}
-				else
-				{
-					$this->template->set_global('login_error', 'Fail');
-				}
-			}
-		}
-
-		$this->template->title = 'Login';
-		$this->template->content = View::forge('auth/login', array('val' => $val), false);
-	}
-
-	/**
-	 * The logout action.
-	 *
-	 * @access  public
-	 * @return  void
-	 */
-	public function action_logout()
-	{
-		Auth::logout();
-		Response::redirect('admin');
 	}
 
 	/**

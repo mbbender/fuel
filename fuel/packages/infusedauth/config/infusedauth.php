@@ -12,8 +12,10 @@
 return array(
 
     'urls' => array(
-        'acccount_validation_required' => 'register/verify',
-        'registered' => 'admin'
+        'acccount_validation_required' => 'register/verify',  //Controller action to show when register success but validation is required. User_id is appended to the end
+        'registered' => 'admin',
+        'verify_action' => 'auth/verify',  // This should point to your controller function that implements the Auth::verify() function
+        'resend_verification_request' => 'resend_verification_request'
     ),
 
 

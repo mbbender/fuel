@@ -36,7 +36,12 @@
 <body>
 	<div id="header">
 		<div class="row">
-			<div id="logo"></div>
+			<div id="logo" class="pull-left"></div>
+            <div class="pull-right">
+                <div>
+                    <a href="auth/login">Login</a> | <a href="auth/register">Sign-Up</a>
+                </div>
+            </div>
 		</div>
 	</div>
 	<div class="container">

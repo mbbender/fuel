@@ -1,7 +1,6 @@
 <?php echo $fieldset->build(); ?>
-<button type="submit" value="Login" name="btnSubmit" title="Login using email address and password" class="btn btn-success">Login</button>
-| <a href="/auth/register">Register</a>
-| <a href="/auth/reset">Forgot your password?</a>
+<button type="submit" value="Reset" name="btnSubmit" title="Reset your password" class="btn btn-success">Reset</button>
+| <a href="/auth/login">Login</a>
 </form>
 
 <?php if($providers): ?>

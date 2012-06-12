@@ -99,7 +99,7 @@ class Controller_Infusedauth extends \Controller_Hybrid
         //\Theme::instance()->set_partial('content', 'users/login/index')->set('fieldset', $fieldset, false);
         //$fieldset->add('btnSubmit','',array('type'=>'submit', 'class'=>'btn', 'colspan'=>2, 'value'=>'Login'));
         $this->template->title = 'Login';
-        $this->template->content = \View::forge('login',array('fieldset'=>$fieldset));
+        $this->template->content = \View::forge('login',array('fieldset'=>$fieldset,'providers'=>\Config::get('ninjauth.providers',false)));
 
     }
 
@@ -221,7 +221,7 @@ class Controller_Infusedauth extends \Controller_Hybrid
         // Load registration form
         $fieldset->populate(\Input::post());
         $this->template->title = "Register";
-        $this->template->content = \View::forge("register",array('fieldset'=>$fieldset));
+        $this->template->content = \View::forge("register",array('fieldset'=>$fieldset,'providers'=>\Config::get('ninjauth.providers',false)));
     }
 
     public function action_verification_required($user_id)
@@ -271,6 +271,74 @@ class Controller_Infusedauth extends \Controller_Hybrid
         }
 
         return "AJAX only";
+    }
+
+    public function action_reset()
+    {
+        $fieldset = \Fieldset::forge('reset');
+        $fieldset->add('email', 'Email', array('maxlength' => 150), array(array('required')));
+
+        if (\Input::post())
+        {
+            if ( ! $fieldset->validation()->run())
+            {
+                \Session::set_flash('error','Please fix errors in the form.');
+            }
+            else
+            {
+                $user = \Model_User::find('first',array('where'=>array('email'=>\Input::post('email'))));
+
+                if(empty($user))
+                {
+                    \Session::set_flash('error','We could not find a user with username or email of '.\Input::post('username'));
+                }
+
+                elseif($providers = \DB::select('*')->where('user_id','=',$user->id)->from('authentications')->execute()->as_array())
+                {
+                    \Session::set_flash('error','This account is linked to '.$providers[0]['provider'].' so we can not reset the password. Please login with '.$providers[0]['provider']);
+                }
+
+                else
+                {
+                    try{
+                        $new_password = \Auth::reset_password($user->username);
+                        \Package::load('email');
+                        $email = \Email::forge();
+                        $email->from(\Config::get('email.defaults.from.email',false),\Config::get('email.deafaults.from.name',false));
+                        $email->to($user->email);
+                        $email->subject('Your '.\Config::get('app.name','').' account password has been reset.');
+                        $email->html_body(\View::forge('reset_password_email',array('user'=>$user,'new_password'=>$new_password)));
+                        try{
+                            $email->send();
+                        }
+
+                        catch(\EmailValidationFailedException $e){
+                            \Session::set_flash('error','We were unable to reset your password. Please try again later.');
+                        }
+                        catch(\EmailSendingFailedException $e){
+                            \Session::set_flash('error','We were unable to reset your password. Please try again later.');
+                        }
+                    }
+
+                    catch(\SimpleUserUpdateException $e)
+                    {
+                        \Session::set_flash('error','We were unable to reset your password. Please try again later.');
+                    }
+
+                    $error = \Session::get_flash('error',null);
+                    if(empty($error))
+                    {
+                        $this->template->title = '';
+                        $this->template->content = \View::forge('reset_success',array('user'=>$user));
+                        return;
+                    }
+                }
+            }
+        }
+
+        $this->template->title = 'Reset Password';
+        $this->template->content = \View::forge('reset_password',array('fieldset'=>$fieldset,'providers'=>\Config::get('ninjauth.providers',false)));
+
     }
 
     /**

@@ -1,6 +1,7 @@
-<h1>Account activation required.</h1>
-<h2>To activate your SociableFundraiser account click on the account activation link below.</h2>
-<strong>Account activation link: </strong><?php echo $validation_link?>
+<h1>Your password has been reset.</h1>
+<strong>Your new password is: </strong><?php echo $new_password?>
+<br/>
+Login: <a href="<?php echo Uri::create('auth/login')?>"><?php echo Uri::create('auth/login')?></a>
 <br/><br/><br/>
 <em>Copyright &copy; <?php echo date('Y')?>&nbsp;<?php echo \Config::get('app.company','') ?>, All rights reserved.</em>
 <br/>

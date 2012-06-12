@@ -31,6 +31,7 @@ class Auth_Login_InfusedAuth extends \Auth\Auth_Login_SimpleAuth
     {
         parent::_init();
         \Config::load('infusedauth', true, true, true);
+        \Config::load('ninjauth', true, true, true);
     }
 
     /**

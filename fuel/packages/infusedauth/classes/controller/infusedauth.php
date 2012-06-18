@@ -13,7 +13,7 @@ namespace InfusedAuth;
 
 use Auth;
 
-class Controller_Infusedauth extends \Controller_Hybrid
+class Controller_Infusedauth extends \Controller_Template
 {
     public static $linked_redirect = 'admin';
     public static $login_redirect = 'admin';
@@ -32,8 +32,6 @@ class Controller_Infusedauth extends \Controller_Hybrid
         // already logged in?
         if (\Auth::check() and \Request::active()->action != 'logout')
         {
-            //\Messages::error('You are already logged in');
-            //\Response::redirect(\Input::post('redirect_to', '/'));
             \Session::set_flash('success','You are already logged in');
             \Response::redirect('admin');    //todo: make configurable
         }

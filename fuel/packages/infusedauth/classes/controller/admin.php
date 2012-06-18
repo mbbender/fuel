@@ -1,5 +1,7 @@
 <?php
 
+namespace InfusedAuth;
+
 class Controller_Admin extends Controller_Base {
 
 	public $template = 'admin/template';
@@ -8,9 +10,9 @@ class Controller_Admin extends Controller_Base {
 	{
 		parent::before();
 
-		if ( ! Auth::check() and Request::active()->action != 'login')
+		if ( ! \Auth::check() and \Request::active()->action != 'login' and \Request::active()->action != 'register')
 		{
-			Response::redirect('auth/login');
+			\Response::redirect('auth/login');
 		}
 	}
 
@@ -23,7 +25,7 @@ class Controller_Admin extends Controller_Base {
 	public function action_index()
 	{
 		$this->template->title = 'Dashboard';
-		$this->template->content = View::forge('admin/dashboard');
+		$this->template->content = \View::forge('admin/dashboard');
 	}
 
 }

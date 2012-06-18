@@ -13,7 +13,7 @@ return array(
     /* Only AIM is supported at this time */
     'authorizenet_api' => 'AIM',
 
-
+    // Test credentials for the sociablegroup1 test account documented in various accounts
     'authorizenet_test_api_id' =>'7hTV5br7E4nJ',
     'authorizenet_test_transaction_key' => '37Zb67u4E9Bjmj3P'
 

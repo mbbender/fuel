@@ -152,16 +152,10 @@ class Test_Adapter_Authorizenet extends \TestCase
             )
         );
 
-        try{
-            Processor::forge($config);
-            Processor::charge($this->charge_transaction);
-            Processor::void($this->charge_transaction->third_party_transaction_id);
-        }
+        Processor::forge($config);
+        Processor::charge($this->charge_transaction);
+        Processor::void($this->charge_transaction);
 
-        catch(PaymentGatewayInvalidException $e)
-        {
-            $this->fail('Unexpected exception ('.$e->getCode().'): '.$e->getMessage());
-        }
 
     }
 

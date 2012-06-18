@@ -8,17 +8,13 @@
  * @copyright  2012 Infused Industries, Inc.
  * @link       http://sociablegroup.com
  */
+ 
+return array(
+    /* Only AIM is supported at this time */
+    'authorizenet_api' => 'AIM',
 
-namespace site;
 
-use view;
+    'authorizenet_test_api_id' =>'7hTV5br7E4nJ',
+    'authorizenet_test_transaction_key' => '37Zb67u4E9Bjmj3P'
 
-class Controller_Site extends \Controller_Hybrid
-{
-    public $template = "template";
-
-    public function action_index()
-    {
-        $this->template->content = View::forge('index');
-    }
-}
+);

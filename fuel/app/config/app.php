@@ -10,5 +10,6 @@
 return array(
     'name' => 'SociableFundraiser',
     'company' => 'Infused Industries, Inc.',
-    'mailing_address' => '5306 Six Forks Rd. Suite 221  Raleigh, NC 27609'
+    'mailing_address' => '5306 Six Forks Rd. Suite 221  Raleigh, NC 27609',
+    'version'=>'2.0'
 );

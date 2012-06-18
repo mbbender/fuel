@@ -9,16 +9,8 @@
  * @link       http://sociablegroup.com
  */
 
-namespace site;
 
-use view;
-
-class Controller_Site extends \Controller_Hybrid
+class Controller_InfusedPay extends \InfusedPay\Controller_Example
 {
-    public $template = "template";
 
-    public function action_index()
-    {
-        $this->template->content = View::forge('index');
-    }
 }

@@ -113,12 +113,6 @@ class Controller_Infusedauth extends \Controller_Hybrid
     public function action_register()
     {
         // If a user clicked on a Login with Third Party button, redirect them appropriately.
-        if(\Input::post('btnSubmit','Register') != 'Register' ){
-            $provider = strtolower(\Input::post('btnSubmit'));
-            \Package::load('ninjauth');
-            \Response::redirect(\Uri::create('session/'.$provider));
-        }
-
         // create the form fieldset, do not add an {open}, a closing ul and a {close}, we have a custom form layout!
         $fieldset = \Fieldset::forge('register');
         $fieldset->add('username', 'Username', array('maxlength' => 50), array(array('required')))
@@ -217,8 +211,13 @@ class Controller_Infusedauth extends \Controller_Hybrid
                 }
             }
         }
+        else
+        {
+           // \Session::set_flash('error',$fieldset->validation->show_errors());
+        }
 
         // Load registration form
+
         $fieldset->populate(\Input::post());
         $this->template->title = "Register";
         $this->template->content = \View::forge("register",array('fieldset'=>$fieldset,'providers'=>\Config::get('ninjauth.providers',false)));

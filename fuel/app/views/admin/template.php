@@ -20,7 +20,7 @@
 	<?php if ($current_user): ?>
 	<div class="navbar navbar-fixed-top">
 	    <div class="navbar-inner">
-	        <div class="container-fluid">
+	        <div class="container">
 	            <a href="#" class="brand">SociableFundraiser</a>
 	            <ul class="nav">
 	                <li class="<?php echo Uri::segment(2) == '' ? 'active' : '' ?>">

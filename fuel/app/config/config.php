@@ -217,7 +217,8 @@ return array(
             'ninjauth',
             'infusedauth',
             'oauth',
-            'oauth2'
+            'oauth2',
+            'infusedpay'
 		),
 
 		/**

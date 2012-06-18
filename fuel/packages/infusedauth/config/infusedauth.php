@@ -47,7 +47,7 @@ return array(
     'notification'=> array(
         'method'=>'email',
         'field'=>'email',
-        'subject' => 'ACTION REQUIRED! Validate your Sociable Fundraiser account.'
+        'subject' => 'ACTION REQUIRED! Validate your account.'
     ),
 
     /**

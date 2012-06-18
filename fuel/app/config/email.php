@@ -46,8 +46,8 @@ return array(
 		 * Default sender details
 		 */
 		'from'		=> array(
-			'email'		=> 'no-reply@sociablefundraiser.com',
-			'name'		=> 'Sociable Fundraiser',
+			'email'		=> null,
+			'name'		=> null,
 		),
 
 		/**
